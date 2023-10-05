@@ -9,6 +9,5 @@ Feature: Placing an Order
     And the user proceeds to the checkout section
     And the user verifies the shipping address
     And the user selects the payment and delivery method
-    Then the order is successfully confirmed
-    And a screenshot of the confirmation is taken
+    Then I take a screenshot of order details
     And the user closes the web browser

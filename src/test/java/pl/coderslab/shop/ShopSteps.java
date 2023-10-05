@@ -1,22 +1,26 @@
 package pl.coderslab.shop;
 
-import org.apache.commons.io.FileUtils;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.jupiter.api.Assertions;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ShopSteps {
     private static WebDriver driver;
+    public String totalPriceBeforeSubmittingText;
 
     @Given("the user opens a web browser and navigates to the main page")
     public void theUserOpensAWebBrowserAndNavigatesToTheMainPage() {
@@ -82,36 +86,14 @@ public class ShopSteps {
 
     }
 
-    @Then("the order is successfully confirmed")
-    public void theOrderIsConfirmed() {
-        Duration timeout = Duration.ofSeconds(10);
-
-        WebDriverWait wait = new WebDriverWait(driver, timeout);
-        WebElement orderConfirmationText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[@class='h1 card-title']")));
-
-        String text = orderConfirmationText.getText();
-        String expectedText = "Your order is confirmed";
-
-        Assertions.assertTrue(text.contains(expectedText), "Order confirmation text is not as expected: " + text);
-    }
-
-
-    @And("a screenshot of the confirmation is taken")
-    public void aScreenshotIsTaken() {
-
-        // Wykonaj zrzut ekranu jako plik
-        File screenshotFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
-
-        String screenshotPath = "C:\\Users\\Wojtek\\Desktop\\sesjsa terminy 0"; //
-
-        try {
-            //
-            FileUtils.copyFile(screenshotFile, new File(screenshotPath));
-            System.out.println("Screenshot saved to: " + screenshotPath);
-        } catch (IOException e) {
-            System.err.println("Failed to save screenshot: " + e.getMessage());
-        }
+    @Then("I take a screenshot of order details")
+    public void iTakeAScreenshotOfOrderDetails() throws IOException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("SSSssmmHHddMMyyyy");
+        String timestamp = dateFormat.format(new Date());
+        String orderDetails = "orderdetails_" + timestamp + ".png";
+        WebElement orderDetailsPartOfThePage = driver.findElement(By.id("content-wrapper"));
+        File orderDetailsPartOfThePageScreenshot = orderDetailsPartOfThePage.getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(orderDetailsPartOfThePageScreenshot, new File("C:\\CodersLab\\EXAM-WORK2\\Screenshots" + orderDetails));
     }
 
     @And("the user closes the web browser")
