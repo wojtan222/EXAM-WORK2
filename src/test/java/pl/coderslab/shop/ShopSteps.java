@@ -16,11 +16,8 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class ShopSteps {
     private static WebDriver driver;
-    public String totalPriceBeforeSubmittingText;
 
     @Given("the user opens a web browser and navigates to the main page")
     public void theUserOpensAWebBrowserAndNavigatesToTheMainPage() {
